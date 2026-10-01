@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "leagues": [
+    {
+      "code": "bdl",
+      "name": "Boston Dodgeball League",
+      "logoPath": "/home-leagues/boston_dodgeball_league.webp"
+    }
+  ],
+  "products": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "name": "Spring BYOT",
+      "startDate": "2026-04-01",
+      "endDate": "2026-06-15",
+      "time": "Wednesdays 7–9 PM",
+      "location": "Cambridge Rindge",
+      "format": "byot",
+      "priceCents": 8500,
+      "capacity": 48,
+      "registrationOpensAt": "2026-03-01T12:00:00.000Z",
+      "registrationClosesAt": "2026-03-28T23:59:59.000Z",
+      "publicDescription": "Eight-week foam league."
+    }
+  ]
+}

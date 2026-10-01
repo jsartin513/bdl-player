@@ -2,13 +2,19 @@ import 'server-only'
 
 import {
   parseLeagueCatalogBody,
+  type ParsedLeagueCatalog,
   type PublicLeagueCatalogEntry,
+  type PublicLeagueProductEntry,
 } from '@/app/lib/league-catalog-parse'
 
-export type { PublicLeagueCatalogEntry }
+export type {
+  ParsedLeagueCatalog,
+  PublicLeagueCatalogEntry,
+  PublicLeagueProductEntry,
+}
 
 export type LeagueCatalogResult =
-  | { ok: true; leagues: PublicLeagueCatalogEntry[] }
+  | ({ ok: true } & ParsedLeagueCatalog)
   | { ok: false; error: string }
 
 function catalogUrl(): string | null {
@@ -32,8 +38,8 @@ export async function fetchLeagueCatalog(): Promise<LeagueCatalogResult> {
       return { ok: false, error: `Catalog HTTP ${res.status}` }
     }
     const json = (await res.json()) as unknown
-    const leagues = parseLeagueCatalogBody(json)
-    return { ok: true, leagues }
+    const parsed = parseLeagueCatalogBody(json)
+    return { ok: true, ...parsed }
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Catalog fetch failed'
     return { ok: false, error: message }
