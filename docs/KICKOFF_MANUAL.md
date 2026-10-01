@@ -8,9 +8,9 @@ Last verified: 2026-09-30.
 
 - [x] Local `bdl-player` app scaffold (Next.js, Drizzle, OAuth, `/api/me`, change feed).
 - [x] **GitHub:** https://github.com/jsartin513/bdl-player — `main` and `preview` pushed (integration branch: **`preview`**, same as `bdl-admin`).
-- [x] **`bdl-packages` contract PR:** [PR #6](https://github.com/jsartin513/bdl-packages/pull/6) (**OPEN**).
-- [x] Pin contract in `package.json` via pnpm git dep (`3629081…&path:player-public-contract`) — **bump SHA to `main` after PR #6 merges**.
-- [ ] **GitHub Actions:** add repo secret `BDL_PACKAGES_READ_TOKEN` (clone private `bdl-packages` in CI).
+- [x] **`bdl-packages` contract PR:** [PR #6](https://github.com/jsartin513/bdl-packages/pull/6) (**merged** to `main`).
+- [x] Pin contract in `package.json` via pnpm git dep (`4592757…&path:player-public-contract`) — post-merge `main` SHA.
+- [ ] **GitHub Actions:** add repo secret `BDL_PACKAGES_READ_TOKEN` (read access to private `jsartin513/bdl-packages`; required for `bash scripts/with-bdl-git-auth.sh` on every CI install even though the contract pin points at public `main`).
 - [ ] **Neon console:** player DB + admin sensitive DB (human).
 - [ ] **Google Cloud:** Web OAuth client + redirect URIs (human).
 - [ ] **Vercel:** `bdl-player` project — **not listed** on team (`bdl-admin` exists; no `bdl-player` yet). See [Vercel — create project (human)](#vercel--create-bdl-player-project-human) below.
@@ -28,7 +28,7 @@ Last verified: 2026-09-30.
 
 - [x] Repo `jsartin513/bdl-player` on GitHub (public).
 - [ ] Optional: set GitHub **default branch** to `preview` (today: `main`; workflow still deploys preview from `preview` branch).
-- [ ] Merge [bdl-packages PR #6](https://github.com/jsartin513/bdl-packages/pull/6); bump pin to merge commit on `main`.
+- [x] Merge [bdl-packages PR #6](https://github.com/jsartin513/bdl-packages/pull/6); pin at `4592757b1d98b9daf3c8e5a5f0e1bad3279fdfdc` on `main`.
 
 ## Google OAuth (player app only)
 
