@@ -13,8 +13,10 @@ Last verified: 2026-10-01.
 - [ ] **GitHub Actions:** add repo secret `BDL_PACKAGES_READ_TOKEN` (read access to private `jsartin513/bdl-packages`; required for `bash scripts/with-bdl-git-auth.sh` on every CI install even though the contract pin points at public `main`).
 - [ ] **Neon console:** player DB + admin sensitive DB (human).
 - [ ] **Google Cloud:** Web OAuth client + redirect URIs (human).
-- [ ] **Vercel:** `bdl-player` project — **not listed** on team (`bdl-admin` exists; no `bdl-player` yet). See [Vercel — create project (human)](#vercel--create-bdl-player-project-human) below.
-- [ ] **DNS:** `play-preview` / `play` → player Vercel (human).
+- [x] **Vercel:** `bdl-player` on team `team_enos0L05q9LlcLBuyq8DrquY` — **created via Vercel MCP** (linked `jsartin513/bdl-player`, production branch **`main`**, preview deploys from all non-production branches including **`preview`**). Project id **`prj_8yqTc0z6QUfcGUhKArdKSSdXLwtd`** · dashboard https://vercel.com/jessica-sartins-projects/bdl-player · default URL https://bdl-player.vercel.app
+- [x] **Vercel domains (project):** `play-preview.bostondodgeballleague.com` → git branch **`preview`**; `play.bostondodgeballleague.com` → **Production** (both show verified in Vercel as of kickoff).
+- [x] **Vercel env (non-secret):** Preview — `NEXT_PUBLIC_APP_URL=https://play-preview.bostondodgeballleague.com`, `NEXT_PUBLIC_LEAGUE_CATALOG_URL=https://admin-preview.bostondodgeballleague.com/api/public/leagues`. Production — `https://play.bostondodgeballleague.com` and `https://admin.bostondodgeballleague.com/api/public/leagues`.
+- [ ] **DNS (registrar):** confirm `play-preview` and `play` CNAMEs if the apex is not fully on Vercel DNS (see [DNS](#dns)).
 - [ ] **Stripe / Resend** (Stage 3+; human).
 - [x] **Admin public catalog API** — [bdl-admin #166](https://github.com/jsartin513/bdl-admin/pull/166) merged; `GET /api/public/leagues` is unauthenticated. Player app reads it via `NEXT_PUBLIC_LEAGUE_CATALOG_URL` (`fetchLeagueCatalog`, `/leagues` stub).
 
@@ -23,8 +25,8 @@ Last verified: 2026-10-01.
 1. Add GitHub repo secret **`BDL_PACKAGES_READ_TOKEN`** (CI install of `@bdl/player-public-contract`).
 2. Create **Neon** player DB (+ admin sensitive DB on admin side); run player migrations; set **`PLAYER_DATABASE_URL`** on Vercel.
 3. Create **Google OAuth** Web client + redirect URIs; set **`PLAYER_GOOGLE_CLIENT_*`** on Vercel.
-4. Create **Vercel** `bdl-player` project, env vars, and **`PLAYER_SESSION_SECRET`** / **`PLAYER_SYNC_SECRET`** (match admin).
-5. **DNS** for `play-preview` / `play` hostnames.
+4. Set Vercel **TODO(secret)** env vars (`PLAYER_SESSION_SECRET`, **`PLAYER_SYNC_SECRET`** match admin, OAuth, DB).
+5. **DNS** registrar CNAMEs for `play-preview` / `play` (confirm in Vercel Domains).
 
 ## Summary
 
@@ -56,13 +58,22 @@ Last verified: 2026-10-01.
 
 ## Vercel — create `bdl-player` project (human)
 
-Do **not** create via automation until `jsartin513/bdl-player` exists on GitHub.
+**Status (2026-10-01):** Project already created (MCP). Use this section only if you need to recreate or audit settings.
 
 1. Vercel team: same team as `bdl-admin` (`team_enos0L05q9LlcLBuyq8DrquY`).
-2. **Add New Project** → import `jsartin513/bdl-player`.
-3. **Production Branch:** `main`. Enable preview deployments for **`preview`** (match admin preview-first flow).
-4. Add domains: `play-preview.bostondodgeballleague.com` (Preview), `play.bostondodgeballleague.com` (Production).
+2. **Add New Project** → import `jsartin513/bdl-player` (or **Import** if the project was deleted).
+3. **Production Branch:** `main`. Push to **`preview`** should produce Preview deployments (match admin preview-first flow).
+4. Domains: `play-preview.bostondodgeballleague.com` (assign to git branch **`preview`**), `play.bostondodgeballleague.com` (Production).
 5. Set non-secret env vars below (Preview + Production targets). Add secrets in dashboard only.
+
+**If import fails in automation** (GitHub app not installed, wrong team, etc.):
+
+1. Open https://vercel.com/new — pick team `team_enos0L05q9LlcLBuyq8DrquY`.
+2. **Import** `jsartin513/bdl-player` → project name **`bdl-player`**.
+3. Framework **Next.js**; install command should pick up **pnpm** from `packageManager` in `package.json`.
+4. **Settings → Git → Production Branch:** `main`.
+5. **Settings → Domains:** add the two hostnames above; branch alias for preview hostname → `preview`.
+6. **Settings → Environment Variables:** copy the [non-secret table](#vercel--bdl-player-project) below; add **TODO(secret)** keys with real values only (never placeholders).
 
 ## Vercel — `bdl-player` project
 
@@ -77,8 +88,8 @@ Set both on the player Vercel project once it exists (preview admin catalog is l
 
 Checklist:
 
-- [ ] `NEXT_PUBLIC_APP_URL` (per table)
-- [ ] `NEXT_PUBLIC_LEAGUE_CATALOG_URL` (per table)
+- [x] `NEXT_PUBLIC_APP_URL` (per table) — set on Vercel 2026-10-01
+- [x] `NEXT_PUBLIC_LEAGUE_CATALOG_URL` (per table) — set on Vercel 2026-10-01
 
 Secrets (**TODO** — set in Vercel dashboard, not in git):
 
@@ -103,8 +114,17 @@ Secrets (**TODO**):
 
 ## DNS
 
-- [ ] `play-preview.bostondodgeballleague.com` → player Vercel preview
-- [ ] `play.bostondodgeballleague.com` → player Vercel production
+At the **domain registrar** (or DNS host for `bostondodgeballleague.com`), add **CNAME** records unless the whole zone is delegated to Vercel (same pattern as `admin-preview` / `admin`):
+
+| Host / name | Type | Value (target) | Serves |
+|-------------|------|----------------|--------|
+| `play-preview` | CNAME | `cname.vercel-dns.com` | Preview deployments from branch **`preview`** (via Vercel domain → branch mapping) |
+| `play` | CNAME | `cname.vercel-dns.com` | Production (`main`) |
+
+After saving DNS, confirm in Vercel **Project → Settings → Domains** that both hostnames show **Valid**. Vercel may show a project-specific target instead of the generic CNAME; use whatever the domain card lists if it differs.
+
+- [ ] Registrar CNAMEs for `play-preview` / `play` (human) — **verify** even if Vercel already shows verified
+- [x] Vercel project has both domains attached to **`bdl-player`**
 
 ## Preview test data (after seeds exist)
 
