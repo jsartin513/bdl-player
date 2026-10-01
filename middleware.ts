@@ -9,6 +9,7 @@ const PUBLIC_PREFIXES = [
   '/api/player/google/',
   '/api/player/logout',
   '/api/internal/',
+  '/api/webhooks/stripe',
 ]
 
 function isPublicPath(pathname: string): boolean {
