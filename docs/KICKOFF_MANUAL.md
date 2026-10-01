@@ -86,7 +86,7 @@ Secrets (**TODO** — set in Vercel dashboard, not in git):
 - [ ] `PLAYER_GOOGLE_CLIENT_ID`
 - [ ] `PLAYER_GOOGLE_CLIENT_SECRET`
 - [ ] `PLAYER_DATABASE_URL`
-- [ ] `PLAYER_SYNC_SECRET` (must match admin)
+- [ ] **`PLAYER_SYNC_SECRET`** — must **match `bdl-admin`** (same Preview / Production targets). Authorizes admin `GET /api/internal/v1/changes` via header **`X-BDL-Player-Sync-Secret`**. Generate once with `openssl rand -base64 32`; set **Sensitive** on both Vercel projects; redeploy. Smoke tests: [bdl-admin `player-sync-runbook.md`](https://github.com/jsartin513/bdl-admin/blob/preview/docs/player-sync-runbook.md).
 - [ ] `SENTRY_DSN` (when Sentry project exists)
 
 ## Vercel — `bdl-admin` (follow-up PRs)
@@ -98,7 +98,7 @@ Non-secret:
 
 Secrets (**TODO**):
 
-- [ ] `PLAYER_SYNC_SECRET` (same value as player app)
+- [ ] **`PLAYER_SYNC_SECRET`** — same value as player app (Preview first). **`PLAYER_SYNC_SECRET` is set on admin Preview** — copy from Vercel `bdl-admin` → set on `bdl-player` Preview when ready. See [player-sync-runbook.md](https://github.com/jsartin513/bdl-admin/blob/preview/docs/player-sync-runbook.md).
 - [ ] `SENSITIVE_DATABASE_URL` (after sensitive DB split)
 
 ## DNS
