@@ -4,7 +4,7 @@ Work that cannot be completed from this repo alone. Use preview first, then prod
 
 ## Progress
 
-Last verified: 2026-09-30.
+Last verified: 2026-10-01.
 
 - [x] Local `bdl-player` app scaffold (Next.js, Drizzle, OAuth, `/api/me`, change feed).
 - [x] **GitHub:** https://github.com/jsartin513/bdl-player — `main` and `preview` pushed (integration branch: **`preview`**, same as `bdl-admin`).
@@ -16,7 +16,15 @@ Last verified: 2026-09-30.
 - [ ] **Vercel:** `bdl-player` project — **not listed** on team (`bdl-admin` exists; no `bdl-player` yet). See [Vercel — create project (human)](#vercel--create-bdl-player-project-human) below.
 - [ ] **DNS:** `play-preview` / `play` → player Vercel (human).
 - [ ] **Stripe / Resend** (Stage 3+; human).
-- [ ] **Admin public catalog API** on preview — ships in [bdl-admin #166](https://github.com/jsartin513/bdl-admin/pull/166); until merge, `GET …/api/public/leagues` returns **401**. Then set `NEXT_PUBLIC_LEAGUE_CATALOG_URL` to that URL on player Vercel.
+- [x] **Admin public catalog API** — [bdl-admin #166](https://github.com/jsartin513/bdl-admin/pull/166) merged; `GET /api/public/leagues` is unauthenticated. Player app reads it via `NEXT_PUBLIC_LEAGUE_CATALOG_URL` (`fetchLeagueCatalog`, `/leagues` stub).
+
+### Remaining human steps (Stage 1)
+
+1. Add GitHub repo secret **`BDL_PACKAGES_READ_TOKEN`** (CI install of `@bdl/player-public-contract`).
+2. Create **Neon** player DB (+ admin sensitive DB on admin side); run player migrations; set **`PLAYER_DATABASE_URL`** on Vercel.
+3. Create **Google OAuth** Web client + redirect URIs; set **`PLAYER_GOOGLE_CLIENT_*`** on Vercel.
+4. Create **Vercel** `bdl-player` project, env vars, and **`PLAYER_SESSION_SECRET`** / **`PLAYER_SYNC_SECRET`** (match admin).
+5. **DNS** for `play-preview` / `play` hostnames.
 
 ## Summary
 
@@ -65,12 +73,12 @@ Non-secret vars (safe to document; set in Vercel per environment):
 | `NEXT_PUBLIC_APP_URL` | `https://play-preview.bostondodgeballleague.com` | `https://play.bostondodgeballleague.com` |
 | `NEXT_PUBLIC_LEAGUE_CATALOG_URL` | `https://admin-preview.bostondodgeballleague.com/api/public/leagues` | `https://admin.bostondodgeballleague.com/api/public/leagues` |
 
-Use the catalog URLs **after** admin exposes `GET /api/public/leagues` without admin session auth. Until then, the player app can set the var but fetches will fail (preview currently returns 401).
+Set both on the player Vercel project once it exists (preview admin catalog is live after #166).
 
 Checklist:
 
 - [ ] `NEXT_PUBLIC_APP_URL` (per table)
-- [ ] `NEXT_PUBLIC_LEAGUE_CATALOG_URL` (per table; valid once admin API is live)
+- [ ] `NEXT_PUBLIC_LEAGUE_CATALOG_URL` (per table)
 
 Secrets (**TODO** — set in Vercel dashboard, not in git):
 
