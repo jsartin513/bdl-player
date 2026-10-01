@@ -23,7 +23,7 @@ Last verified: 2026-10-01.
 ### Remaining human steps (Stage 1)
 
 1. Add GitHub repo secret **`BDL_PACKAGES_READ_TOKEN`** (CI install of `@bdl/player-public-contract`).
-2. Create **Neon** player DB (+ admin sensitive DB on admin side); run player migrations; set **`PLAYER_DATABASE_URL`** on Vercel.
+2. Create **Neon** player DB (+ admin sensitive DB on admin side); set **`PLAYER_DATABASE_URL`** and run **`pnpm run db:migrate`** (or rely on Vercel build migrate) — see [Neon](#neon).
 3. Create **Google OAuth** Web client + redirect URIs; set **`PLAYER_GOOGLE_CLIENT_*`** on Vercel.
 4. Set Vercel **TODO(secret)** env vars (`PLAYER_SESSION_SECRET`, **`PLAYER_SYNC_SECRET`** match admin, OAuth, DB).
 5. **DNS** registrar CNAMEs for `play-preview` / `play` (confirm in Vercel Domains).
@@ -92,10 +92,31 @@ Checklist:
 
 ## Neon
 
-- [ ] New Neon project for **player** data only.
-- [ ] New Neon project for **admin sensitive** skill/notes (admin Stage 0 — separate from player).
-- [ ] Run `drizzle` migration on player DB (`drizzle/0000_player_accounts.sql` or `db:migrate` when scripted).
-- [ ] Set `PLAYER_DATABASE_URL` on player Vercel (**TODO: secret**).
+Player data lives in its own Neon project (never reuse admin `DATABASE_URL`). Admin **sensitive** skill/notes use a separate Neon project on `bdl-admin` (`SENSITIVE_DATABASE_URL`) — see the admin kickoff/runbook.
+
+### Player DB — Neon console (human)
+
+1. Sign in at [Neon Console](https://console.neon.tech).
+2. **New Project** → name e.g. `bdl-player` → region close to Vercel (e.g. `aws-us-east-1`).
+3. Open the project → **Connection details** → copy the **pooled** connection string (recommended for serverless).
+4. Store it only as **`PLAYER_DATABASE_URL`** (player Vercel + local `.env.local`). Do **not** commit the URL or paste it into git.
+5. Apply schema (pick one):
+   - **Local / one-off:** from repo root with the URL in the environment:
+     ```bash
+     export PLAYER_DATABASE_URL='postgresql://…'   # from Neon; never commit
+     pnpm run db:migrate
+     ```
+   - **Vercel:** set `PLAYER_DATABASE_URL` on the player project (Preview and/or Production). Each deploy runs `db:migrate:deploy` before `next build` and applies pending files under `drizzle/` (starts with `drizzle/0000_player_accounts.sql`).
+6. In Neon **SQL Editor**, optional sanity check: `SELECT tablename FROM pg_tables WHERE schemaname = 'public';` — expect `player_accounts`, `player_profiles`, and Drizzle’s `__drizzle_migrations` after a successful migrate.
+
+More detail: [docs/NEON_SETUP.md](NEON_SETUP.md).
+
+Checklist:
+
+- [ ] Neon project for **player** data only.
+- [ ] `PLAYER_DATABASE_URL` set on player Vercel (**TODO: secret**).
+- [ ] Migrations applied (`pnpm run db:migrate` locally or via first Vercel build with the URL set).
+- [ ] (Admin, separate) Neon project for sensitive data — `SENSITIVE_DATABASE_URL` on admin Vercel.
 
 ## Vercel — create `bdl-player` project (human)
 
