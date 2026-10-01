@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@bdl/player-public-contract':
-        specifier: github:jsartin513/bdl-packages#3629081f15ed8567427e378de031b3054258fa7d&path:player-public-contract
-        version: git+https://github.com/jsartin513/bdl-packages.git#3629081f15ed8567427e378de031b3054258fa7d&path:player-public-contract
+        specifier: github:jsartin513/bdl-packages#4592757b1d98b9daf3c8e5a5f0e1bad3279fdfdc&path:player-public-contract
+        version: git+https://github.com/jsartin513/bdl-packages.git#4592757b1d98b9daf3c8e5a5f0e1bad3279fdfdc&path:player-public-contract
       '@neondatabase/serverless':
         specifier: ^1.1.0
         version: 1.1.0
@@ -70,8 +70,8 @@ packages:
     resolution: {integrity: sha512-U4+70Pc5ZS9osnCBCE5Jha/ciHM+Yp+CNMNC/7HvYbNRk1Ldd+f7qO65W5qfhu/TCv+/ozljlXXe9Nj8419DMA==}
     engines: {node: '>=10'}
 
-  '@bdl/player-public-contract@git+https://github.com/jsartin513/bdl-packages.git#3629081f15ed8567427e378de031b3054258fa7d&path:player-public-contract':
-    resolution: {commit: 3629081f15ed8567427e378de031b3054258fa7d, path: player-public-contract, repo: https://github.com/jsartin513/bdl-packages.git, type: git}
+  '@bdl/player-public-contract@git+https://github.com/jsartin513/bdl-packages.git#4592757b1d98b9daf3c8e5a5f0e1bad3279fdfdc&path:player-public-contract':
+    resolution: {commit: 4592757b1d98b9daf3c8e5a5f0e1bad3279fdfdc, path: player-public-contract, repo: https://github.com/jsartin513/bdl-packages.git, type: git}
     version: 0.1.0
 
   '@drizzle-team/brocli@0.10.2':
@@ -2773,7 +2773,7 @@ snapshots:
 
   '@alloc/quick-lru@5.3.0': {}
 
-  '@bdl/player-public-contract@git+https://github.com/jsartin513/bdl-packages.git#3629081f15ed8567427e378de031b3054258fa7d&path:player-public-contract': {}
+  '@bdl/player-public-contract@git+https://github.com/jsartin513/bdl-packages.git#4592757b1d98b9daf3c8e5a5f0e1bad3279fdfdc&path:player-public-contract': {}
 
   '@drizzle-team/brocli@0.10.2': {}
 
