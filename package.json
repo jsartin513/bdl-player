@@ -13,8 +13,9 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "packageManager": "pnpm@10.14.0",
   "dependencies": {
-    "@bdl/player-public-contract": "file:../bdl-packages/player-public-contract",
+    "@bdl/player-public-contract": "github:jsartin513/bdl-packages#3629081f15ed8567427e378de031b3054258fa7d&path:player-public-contract",
     "@neondatabase/serverless": "^1.1.0",
     "drizzle-orm": "^0.45.2",
     "next": "15.2.8",
