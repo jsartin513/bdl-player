@@ -16,7 +16,7 @@ Last verified: 2026-09-30.
 - [ ] **Vercel:** `bdl-player` project — **not listed** on team (`bdl-admin` exists; no `bdl-player` yet). See [Vercel — create project (human)](#vercel--create-bdl-player-project-human) below.
 - [ ] **DNS:** `play-preview` / `play` → player Vercel (human).
 - [ ] **Stripe / Resend** (Stage 3+; human).
-- [ ] **Admin public catalog API** live on preview — `GET https://admin-preview.bostondodgeballleague.com/api/public/leagues` currently **401** until [admin kickoff PRs](https://github.com/jsartin513/bdl-admin/blob/preview/docs/player-app-kickoff.md) ship; set `NEXT_PUBLIC_LEAGUE_CATALOG_URL` after that.
+- [ ] **Admin public catalog API** on preview — ships in [bdl-admin #166](https://github.com/jsartin513/bdl-admin/pull/166); until merge, `GET …/api/public/leagues` returns **401**. Then set `NEXT_PUBLIC_LEAGUE_CATALOG_URL` to that URL on player Vercel.
 
 ## Summary
 
