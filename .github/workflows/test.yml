@@ -1,14 +1,22 @@
 name: Tests
 
 on:
-  push:
-    branches: [preview, main]
   pull_request:
     branches: [preview, main]
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   test:
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -22,8 +30,6 @@ jobs:
         env:
           BDL_PACKAGES_READ_TOKEN: ${{ secrets.BDL_PACKAGES_READ_TOKEN }}
       - run: npm run lint
+      # `next build` (and db:migrate:deploy) runs on Vercel. Keep typecheck here.
+      - run: pnpm exec tsc --noEmit
       - run: npm run test:run
-      - run: npm run build
-        env:
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
-          NEXT_PUBLIC_LEAGUE_CATALOG_URL: http://localhost:3000/api/public/leagues
