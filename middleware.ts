@@ -9,10 +9,11 @@ const PUBLIC_PREFIXES = [
   '/api/player/google/',
   '/api/player/logout',
   '/api/internal/',
+  '/api/webhooks/stripe',
 ]
 
 function isPublicPath(pathname: string): boolean {
-  if (pathname === '/') return true
+  if (pathname === '/' || pathname === '/leagues') return true
   return PUBLIC_PREFIXES.some((p) => pathname.startsWith(p))
 }
 

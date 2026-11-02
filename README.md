@@ -22,7 +22,10 @@ Requires Node 20+. Uses `player_session` Google login (same pattern as [open-gym
 
 - `npm run dev` — Next.js (Turbopack)
 - `npm run test:run` — Vitest (env boundary + public profile)
-- `npm run build` — production build
+- `npm run build` — runs `db:migrate:deploy` when `PLAYER_DATABASE_URL` is set, then Next.js production build
+- `npm run db:migrate` — apply Drizzle migrations (requires `PLAYER_DATABASE_URL`)
+
+Neon setup: [docs/NEON_SETUP.md](docs/NEON_SETUP.md).
 
 ## Branches
 
